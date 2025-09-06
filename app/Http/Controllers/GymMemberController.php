@@ -17,7 +17,9 @@ class GymMemberController extends Controller
     $members = GymMember::query()
         ->when($search, function ($query, $search) {
             $query->where('first_name', 'like', "%{$search}%")
-                  ->orWhere('last_name', 'like', "%{$search}%");
+                  ->orWhere('last_name', 'like', "%{$search}%")
+                  ->orWhere('id_card','like',"%{$search}%");
+
         })
         ->paginate(10)
         ->appends(['search' => $search]); // keeps search in pagination links
@@ -39,7 +41,7 @@ class GymMemberController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'id_card' => 'required|unique:gym_members',
+            'id_card' => 'required|unique:gym_members|min:8|max:9',
             'expiry' => 'required|date|after_or_equal:today',
             'membership' => 'required|string',
             'first_name' => 'required|string',
@@ -50,7 +52,7 @@ class GymMemberController extends Controller
         ]);
 
         if($request->hasFile('profile_image')){
-            $validate['profile_image'] = $request->file('profile_image')->store('image','public');
+            $validated['profile_image'] = $request->file('profile_image')->store('image','public');
         }
 
         GymMember::create($validated);
@@ -88,5 +90,9 @@ class GymMemberController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function editExpiry(GymMember $member){
+        return view('gym_member_edit_expiry',compact('member'));
     }
 }

@@ -6,21 +6,26 @@
     <!-- Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 min-h-screen flex items-center justify-center p-6">
+<body class="overflow-x-auto min-h-[400px]-screen flex items-center justify-center p-6">
     <div class="w-full max-w-5xl bg-white shadow-lg rounded-xl p-6">
-        <div class="flex items-center justify-between mb-6">
-            <h1 class="text-3xl font-bold text-gray-800">Gym Members</h1>
 
-            <a href="{{ route('gym-member.create') }}"
-               class="px-2 py-1 bg-blue-600 text-white text-sm font-medium rounded-lg shadow hover:bg-blue-700 transition">
-               ➕ Add Member
-            </a>
+    <!--header -->
 
-            <a href="http://127.0.0.1:8000/member-login"
-   class="px-2 py-1 bg-blue-600 text-white text-sm font-medium rounded-lg shadow hover:bg-blue-700 transition">
-   ➕ Login
-</a>
+           <!-- Header -->
+        <div class="flex items-center justify-between mb-8">
+            <h1 class="text-4xl font-extrabold text-gray-800">🏋️ Gym Members</h1>
+            
+            <div class="flex gap-3">
+                <a href="{{ route('gym-member.create') }}"
+                   class="px-4 py-2 bg-green-600 text-white text-sm font-semibold rounded-lg shadow hover:bg-green-700 transition">
+                   ➕ Add Member
+                </a>
 
+                <a href="http://127.0.0.1:8000/member-login"
+                   class="px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg shadow hover:bg-blue-700 transition">
+                   🔑 Login
+                </a>
+            </div>
         </div>
 
         <!-- Search -->
