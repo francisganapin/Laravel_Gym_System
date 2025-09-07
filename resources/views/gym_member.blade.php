@@ -43,16 +43,20 @@
         <div class="overflow-x-auto">
             <table class="w-full border border-gray-200 rounded-lg overflow-hidden">
                 <thead class="bg-gray-100">
+                    
                     <tr>
+                        <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">ID</th>
                         <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">ID Card</th>
                         <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Name</th>
                         <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Membership</th>
                         <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Expiry</th>
+                        <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Update</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse($members as $member)
                     <tr class="border-t hover:bg-gray-50 transition">
+                        <td class="px-4 py-3 text-gray-700">{{ $member->id }}</td>
                         <td class="px-4 py-3 text-gray-700">{{ $member->id_card }}</td>
                         <td class="px-4 py-3 text-gray-700 font-medium">
                             {{ $member->first_name }} {{ $member->last_name }}
@@ -65,6 +69,12 @@
                                 text-green-600 
                             @endif">
                             {{ \Carbon\Carbon::parse($member->expiry)->format('M d, Y') }}
+                        </td>
+                        <td> 
+                        <a href="{{ route('gym-member.edit-expiry', $member->id) }}" 
+   class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700">
+    Update Expiry
+</a>
                         </td>
                     </tr>
                     @empty

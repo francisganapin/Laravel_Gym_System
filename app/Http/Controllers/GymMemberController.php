@@ -92,7 +92,24 @@ class GymMemberController extends Controller
         //
     }
 
-    public function editExpiry(GymMember $member){
-        return view('gym_member_edit_expiry',compact('member'));
+
+ 
+    public function editExpiry($id){
+        $member = GymMember::findOrFail($id);
+        return view('gym_member.edit_expiry',compact('member'));
+
+    }
+
+    public function updateExpiry(Request $request,$id){
+        $request->validate([
+            'expiry' => 'required|date|after_or_equal:today',
+        ]);
+
+        $member = GymMember::findOrFail($id);
+        $member-> expiry = $request->expiry;
+        $member->save();
+
+        return redirect()->route('gym-member.index')->with('success','expiry updated successfully!');
     }
 }
+
