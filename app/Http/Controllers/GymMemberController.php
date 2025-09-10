@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\GymMember;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class GymMemberController extends Controller
 {
@@ -13,6 +14,7 @@ class GymMemberController extends Controller
     public function index(Request $request)
     {
     $search = $request->input('search');
+    $membership = $request->input('membership');
 
     $members = GymMember::query()
         ->when($search, function ($query, $search) {
@@ -21,10 +23,17 @@ class GymMemberController extends Controller
                   ->orWhere('id_card','like',"%{$search}%");
 
         })
+        #check membership type
+        ->when($membership,function($query,$membership){
+            $query->where('membership',$membership);
+        })
+
+        #show 10 item 
         ->paginate(10)
+
         ->appends(['search' => $search]); // keeps search in pagination links
 
-    return view('gym_member', compact('members', 'search'));
+    return view('gym_member', compact('members', 'search','membership'));
     }
 
     /**
@@ -111,5 +120,24 @@ class GymMemberController extends Controller
 
         return redirect()->route('gym-member.index')->with('success','expiry updated successfully!');
     }
-}
 
+
+    public function countStatistic()
+    {
+        $today = Carbon::today();
+
+        $total = GymMember::count();
+        $standard = GymMember::where('membership','Standard')->count();
+        $premium = GymMember::where('membership','Premium')->count();
+        $vip = GymMember::where('membership','Vip')->count();
+
+        $expired = GymMember::where('expiry_date','<',$today)->count();
+        
+        return view('dashboard', compact(
+            'total', 'standard', 'premium', 'vip', 'expired'
+        ));
+        
+    
+    }
+ 
+}

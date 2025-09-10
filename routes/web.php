@@ -25,3 +25,5 @@ Route::get('/gym-member/{member}/edit-expiry',[GymMemberController::class,'editE
 
 //Update expiry
 Route::patch('/gym-member/{member}/update-expiry',[GymMemberController::class,'updateExpiry'])->name('gym-member.update-expiry');
+
+Route::get('/dashboard',[GymMemberController::class,'countStatistic']);
