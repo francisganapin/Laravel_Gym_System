@@ -16,6 +16,7 @@ class GymMemberController extends Controller
     $search = $request->input('search');
     $membership = $request->input('membership');
 
+    // search Query 
     $members = GymMember::query()
         ->when($search, function ($query, $search) {
             $query->where('first_name', 'like', "%{$search}%")
@@ -110,12 +111,15 @@ class GymMemberController extends Controller
     }
 
     public function updateExpiry(Request $request,$id){
+
         $request->validate([
             'expiry' => 'required|date|after_or_equal:today',
         ]);
 
         $member = GymMember::findOrFail($id);
+
         $member-> expiry = $request->expiry;
+
         $member->save();
 
         return redirect()->route('gym-member.index')->with('success','expiry updated successfully!');
@@ -127,8 +131,11 @@ class GymMemberController extends Controller
         $today = Carbon::today();
 
         $total = GymMember::count();
+
         $standard = GymMember::where('membership','Standard')->count();
+
         $premium = GymMember::where('membership','Premium')->count();
+
         $vip = GymMember::where('membership','Vip')->count();
 
         $expired = GymMember::where('expiry_date','<',$today)->count();

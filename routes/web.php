@@ -5,19 +5,14 @@ use App\Http\Controllers\GymMemberController;
 use App\Http\Controllers\MemberLoginController;
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', function () { return redirect()->route('gym-member.index'); }); 
+Route::resource('gym-member',GymMemberController::class); 
+Route::post('/gym-member',[GymMemberController::class,'store'])->name('gym-member.store'); 
 
 
-Route::resource('gym-member',GymMemberController::class);
 
-Route::post('/gym-member',[GymMemberController::class,'store'])->name('gym-member.store');
-
-Route::get('/member-login', [MemberLoginController::class, 'showLogin'])
-    ->name('member.login.form');
-Route::post('/member-login', [MemberLoginController::class, 'login'])
-    ->name('member.login.post');
+Route::get('/member-login', [MemberLoginController::class, 'showLogin']) ->name('member.login.form'); 
+Route::post('/member-login', [MemberLoginController::class, 'login']) ->name('member.login.post'); 
 
 //Show form to edit expiry
 
